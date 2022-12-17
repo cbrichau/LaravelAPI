@@ -14,6 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->get('/user', function (Request $request)
+{
+	return $request->user();
 });
+
+Route::group(
+	[
+		'prefix' => 'v1',
+		'namespace' => 'App\Http\Controllers\API\V1'
+	],
+	function ()
+	{
+		Route::post('baskets/{basketId}/products/{productId}', 'BasketController@addItem');
+		Route::delete('baskets/{basketId}/products/{productId}', 'BasketController@removeItem');
+		Route::get('baskets/download-losses', 'ProductController@downloadLosses');
+	}
+);
