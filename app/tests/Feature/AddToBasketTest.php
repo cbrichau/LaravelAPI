@@ -15,6 +15,6 @@ class AddToBasketTest extends TestCase
 	{
 		$response = $this->post('/api/v1/baskets/1/products/1');
 
-		$response->assertStatus(200);
+		$response->assertStatus(201);
 	}
 }

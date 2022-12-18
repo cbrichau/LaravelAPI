@@ -6,17 +6,25 @@ use App\Models\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
-	public function downloadLosses()
+	/**
+	 * Gets the products that have been removed from a basket.
+	 *
+	 * @return JsonResponse
+	 */
+	public function downloadLosses(): JsonResponse
 	{
 		$removedProducts = Product::whereHas('baskets', function ($query)
 		{
 			$query->whereNotNull('date_removed');
 		})->get();
 
-		return $removedProducts;
+		return response()->json([
+			'data' => $removedProducts
+		]);
 	}
 
 	// /**

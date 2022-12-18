@@ -5,40 +5,57 @@ namespace App\Http\Controllers\API\V1;
 use DateTime;
 use App\Models\Basket;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBasketRequest;
 use App\Http\Requests\UpdateBasketRequest;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 
 class BasketController extends Controller
 {
-	public function addItem(string $basketId, string $productId)
+	use RefreshDatabase;
+
+	/**
+	 * Add the given product to the given basket.
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function addItem(string $basketId, string $productId): JsonResponse
 	{
 		if (($basket = Basket::find($basketId)) === null)
-			return 'Invalid basketId';
+			return response()->json(['error' => 'Invalid basketId'], 400);
+
 		if (($product = Product::find($productId)) === null)
-			return 'Invalid productId';
+			return response()->json(['error' => 'Invalid productId'], 400);
 
 		$basket->products()->sync([
 			$productId => ['date_removed' => null]
 		], false);
 
-		return json_encode([
+		return response()->json([
 			'response' => 'success'
-		]);
+		], 201);
 	}
 
-	public function removeItem(string $basketId, string $productId)
+	/**
+	 * Removes the given product from the given basket.
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function removeItem(string $basketId, string $productId): JsonResponse
 	{
 		if (($basket = Basket::find($basketId)) === null)
-			return 'Invalid basketId';
+			return response()->json(['error' => 'Invalid basketId'], 400);
+
 		if (($product = Product::find($productId)) === null)
-			return 'Invalid productId';
+			return response()->json(['error' => 'Invalid productId'], 400);
 
 		$basket->products()->sync([
 			$productId => ['date_removed' => new DateTime()]
 		], false);
 
-		return json_encode([
+		return response()->json([
 			'response' => 'success'
 		]);
 	}
