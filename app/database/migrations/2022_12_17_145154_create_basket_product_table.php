@@ -28,6 +28,12 @@ return new class extends Migration
 	 */
 	public function down()
 	{
+		Schema::table('basket_product', function (Blueprint $table)
+		{
+			$table->dropForeign('basket_product_basket_id_foreign');
+			$table->dropForeign('basket_product_product_id_foreign');
+		});
+
 		Schema::dropIfExists('basket_product');
 	}
 };

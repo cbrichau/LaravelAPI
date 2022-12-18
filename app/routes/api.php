@@ -28,6 +28,6 @@ Route::group(
 	{
 		Route::post('baskets/{basketId}/products/{productId}', 'BasketController@addItem');
 		Route::delete('baskets/{basketId}/products/{productId}', 'BasketController@removeItem');
-		Route::get('baskets/download-losses', 'ProductController@downloadLosses');
+		Route::get('products/download-losses', 'ProductController@downloadLosses');
 	}
 );

@@ -17,11 +17,11 @@ class BasketController extends Controller
 	use RefreshDatabase;
 
 	/**
-	 * Add the given product to the given basket.
-	 *
+	 * Adds the given product to the given basket.
+	 * 
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function addItem(string $basketId, string $productId): JsonResponse
+	public function addItem(int $basketId, int $productId): JsonResponse
 	{
 		if (($basket = Basket::find($basketId)) === null)
 		{
@@ -47,7 +47,7 @@ class BasketController extends Controller
 	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function removeItem(string $basketId, string $productId): JsonResponse
+	public function removeItem(int $basketId, int $productId): JsonResponse
 	{
 		if (($basket = Basket::find($basketId)) === null)
 		{
@@ -75,7 +75,7 @@ class BasketController extends Controller
 	//  */
 	// public function index()
 	// {
-	// 	//
+	// 	return Basket::all();
 	// }
 
 	// /**
