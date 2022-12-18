@@ -23,7 +23,9 @@ class ProductSeeder extends Seeder
 		];
 
 		foreach ($assignmentInput as $product)
+		{
 			Product::factory()->create($product);
+		}
 
 		Product::factory(10)->create();
 	}

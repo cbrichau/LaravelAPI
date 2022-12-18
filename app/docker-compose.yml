@@ -55,7 +55,7 @@ services:
     environment:
       PMA_HOST: '${DB_CONNECTION}'
       PMA_PORT: '${DB_PORT}'
-      PMA_USER: '${DB_USERNAME}'
+      PMA_USER: 'root'
       PMA_PASSWORD: '${DB_PASSWORD}'
 
 networks:

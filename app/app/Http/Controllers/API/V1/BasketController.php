@@ -24,10 +24,14 @@ class BasketController extends Controller
 	public function addItem(string $basketId, string $productId): JsonResponse
 	{
 		if (($basket = Basket::find($basketId)) === null)
+		{
 			return response()->json(['error' => 'Invalid basketId'], 400);
+		}
 
 		if (($product = Product::find($productId)) === null)
+		{
 			return response()->json(['error' => 'Invalid productId'], 400);
+		}
 
 		$basket->products()->sync([
 			$productId => ['date_removed' => null]
@@ -46,10 +50,14 @@ class BasketController extends Controller
 	public function removeItem(string $basketId, string $productId): JsonResponse
 	{
 		if (($basket = Basket::find($basketId)) === null)
+		{
 			return response()->json(['error' => 'Invalid basketId'], 400);
+		}
 
 		if (($product = Product::find($productId)) === null)
+		{
 			return response()->json(['error' => 'Invalid productId'], 400);
+		}
 
 		$basket->products()->sync([
 			$productId => ['date_removed' => new DateTime()]
