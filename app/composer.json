@@ -16,6 +16,7 @@
         "friendsofphp/php-cs-fixer": "^3.13",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
+        "laravel/telescope": "^4.10",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "nunomaduro/larastan": "^2.2",
@@ -52,7 +53,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+							"laravel/telescope"
+						]
         }
     },
     "config": {
