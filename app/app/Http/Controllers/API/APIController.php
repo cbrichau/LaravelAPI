@@ -11,7 +11,7 @@ abstract class APIController extends Controller
 {
 	/**
 	 * @param int $status
-	 * @param array<string, string> $data
+	 * @param array<string, int|string> $data
 	 * @return JsonResponse
 	 */
 	protected function returnSuccessResponse(int $status, array $data = []): JsonResponse

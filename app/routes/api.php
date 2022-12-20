@@ -27,6 +27,7 @@ Route::group(
 	}
 );
 
+// Public (customer) routes
 Route::group(
 	[
 		'prefix' => 'v1',
@@ -36,6 +37,17 @@ Route::group(
 	{
 		Route::post('baskets/{basketId}/products/{productId}', [BasketController::class, 'addItem']);
 		Route::delete('baskets/{basketId}/products/{productId}', [BasketController::class, 'removeItem']);
+	}
+);
+
+// Internal (employee) routes
+Route::group(
+	[
+		'prefix' => 'v1',
+		'middleware' => ['auth:sanctum', 'can:access_internal_features']
+	],
+	function ()
+	{
 		Route::get('products/download-losses', [ProductController::class, 'downloadLosses']);
 	}
 );

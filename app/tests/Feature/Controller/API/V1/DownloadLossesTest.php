@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controller\API\V1;
 
+use App\Models\User;
 use Illuminate\Testing\TestResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Tests\Feature\Controller\API\V1\AbstractEndpointFeatureTest;
@@ -50,4 +51,14 @@ class DownloadLossesTest extends AbstractEndpointFeatureTest
 	\* ******************************************** */
 
 	// Add tests with invalid filters
+
+	public function test_download_losses_with_external_user(): void
+	{
+		/** @var User $authenticatedUser */
+		$authenticatedUser = User::find(2);
+
+		$response = $this->actingAs($authenticatedUser)->getJson('/api/v1/products/download-losses');
+
+		$response->assertStatus(403);
+	}
 }
