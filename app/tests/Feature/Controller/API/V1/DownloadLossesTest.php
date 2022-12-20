@@ -2,33 +2,32 @@
 
 namespace Tests\Feature\Controller\API\V1;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Illuminate\Testing\TestResponse;
+use Tests\Feature\Controller\API\V1\AbstractEndpointFeatureTest;
 
-class DownloadLossesTest extends TestCase
+class DownloadLossesTest extends AbstractEndpointFeatureTest
 {
+	private function callEndpoint(): TestResponse
+	{
+		return $this->request('get', '/api/v1/products/download-losses');
+	}
+
 	/* ******************************************** *\
 		Happy flow
 	\* ******************************************** */
 
 	public function test_download_losses(): void
 	{
-		$response = $this->get('/api/v1/products/download-losses');
+		$response = $this->callEndpoint();
 
-		// Enables deleteFileAfterSend()
+		// Enables deleteFileAfterSend().
 		ob_start();
 		$response->sendContent();
 		ob_end_clean();
 
-		$this->assertMatch($response, [
-			'status' => 200,
-			'headers' => [
-				'content-type' => 'text/csv; charset=UTF-8'
-			]
-		]);
-
+		$response->assertStatus(200);
 		$response->assertDownload();
+		$response->assertHeader('content-type', 'text/csv; charset=UTF-8');
 
 		$filenameTemplate = '#^losses\-\d{4}\-\d{2}\-\d{2}UTC\d{2}:\d{2}:\d{2}\.csv$#';
 		$this->assertMatchesRegularExpression($filenameTemplate, $response->getFile()->getFilename());

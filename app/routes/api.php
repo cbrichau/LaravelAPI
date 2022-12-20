@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\V1\BasketController;
+use App\Http\Controllers\API\V1\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,20 +16,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request)
-{
-	return $request->user();
-});
+Route::group(
+	[
+		'prefix' => 'auth',
+	],
+	function ()
+	{
+		Route::post('sign-up', [AuthController::class, 'signUp']);
+		Route::post('sign-in', [AuthController::class, 'signIn']);
+	}
+);
 
 Route::group(
 	[
 		'prefix' => 'v1',
-		'namespace' => 'App\Http\Controllers\API\V1'
+		'middleware' => ['auth:sanctum']
 	],
 	function ()
 	{
-		Route::post('baskets/{basketId}/products/{productId}', 'BasketController@addItem');
-		Route::delete('baskets/{basketId}/products/{productId}', 'BasketController@removeItem');
-		Route::get('products/download-losses', 'ProductController@downloadLosses');
+		Route::post('baskets/{basketId}/products/{productId}', [BasketController::class, 'addItem']);
+		Route::delete('baskets/{basketId}/products/{productId}', [BasketController::class, 'removeItem']);
+		Route::get('products/download-losses', [ProductController::class, 'downloadLosses']);
 	}
 );

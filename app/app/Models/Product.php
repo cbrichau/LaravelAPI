@@ -16,6 +16,6 @@ class Product extends Model
 	 */
 	public function baskets(): BelongsToMany
 	{
-		return $this->belongsToMany(Basket::class);
+		return $this->belongsToMany(Basket::class)->withTimestamps()->withPivot('removal_date');
 	}
 }

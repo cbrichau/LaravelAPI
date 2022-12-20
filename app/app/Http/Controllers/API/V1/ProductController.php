@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\API\V1;
 
 use DateTime;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Controllers\API\APIController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class ProductController extends Controller
+class ProductController extends APIController
 {
 	/**
 	 * Returns a csv file of the products that have been removed from a basket.
@@ -24,19 +23,19 @@ class ProductController extends Controller
 
 		if (($handle = fopen($filename, 'w+')) === false)
 		{
-			throw new Exception('Could not open file');
+			return $this->returnErrorResponse(500, ['Could not open file']);
 		}
 
-		if (fputcsv($handle, ['basket_id', 'product_id', 'date_removed', 'product_name', 'product_price']) === false)
+		if (fputcsv($handle, ['basket_id', 'product_id', 'creation_date', 'removal_date', 'product_name', 'product_price']) === false)
 		{
-			throw new Exception('Could not write in file');
+			return $this->returnErrorResponse(500, ['Could not write in file']);
 		}
 
 		$losses = DB::table('basket_product')
 			->join('baskets', 'baskets.id', '=', 'basket_id')
 			->join('products', 'products.id', '=', 'product_id')
-			->select('basket_id', 'product_id', 'date_removed', 'products.name', 'products.price')
-			->whereNotNull('date_removed');
+			->select('basket_id', 'product_id', 'basket_product.created_at', 'removal_date', 'products.name', 'products.price')
+			->whereNotNull('removal_date');
 
 		$filters = $request->query();
 		if (isset($filters['productId']))
@@ -49,13 +48,13 @@ class ProductController extends Controller
 		{
 			if (fputcsv($handle, json_decode(json_encode($loss), true)) === false)
 			{
-				throw new Exception('Could not write in file');
+				return $this->returnErrorResponse(500, ['Could not write in file']);
 			}
 		}
 
 		fclose($handle);
 
-		return response()->download($filename, $filename, ['Content-Type' => 'text/csv'])->deleteFileAfterSend();
+		return response()->download($filename, $filename, ['content-type' => 'text/csv'])->deleteFileAfterSend();
 	}
 
 	// /**
