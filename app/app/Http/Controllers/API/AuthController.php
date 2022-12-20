@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\API\APIController;
+use App\Models\Basket;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends APIController
@@ -38,10 +39,12 @@ class AuthController extends APIController
 
 		$payload['password'] = Hash::make($payload['password']);
 		$user = User::create($payload);
+		$userBasket = Basket::create(['user_id' => $user->id]);
 
 		$data = [
 			'name' =>  $user->name,
 			'email' =>  $user->email,
+			'basket' => $userBasket->id,
 			'token' =>  $user->createToken('userToken')->plainTextToken
 		];
 
