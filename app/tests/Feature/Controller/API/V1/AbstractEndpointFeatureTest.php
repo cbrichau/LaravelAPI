@@ -9,7 +9,7 @@ use Illuminate\Testing\TestResponse;
 abstract class AbstractEndpointFeatureTest extends TestCase
 {
 	/**
-	 * Helper method to make a request with all the required headers and authentication.
+	 * Helper method to make a request with the required JSON headers and authentication.
 	 * 
 	 * @param string $method
 	 * @param string $url
@@ -17,15 +17,9 @@ abstract class AbstractEndpointFeatureTest extends TestCase
 	 */
 	protected function request(string $method, string $url): TestResponse
 	{
-		$headers['accept'] = 'application/json';
-		if ($method === 'post')
-		{
-			$headers['content-type'] = 'application/json';
-		}
-
 		$this->actingAs(User::find(1));
 
-		return $this->withHeaders($headers)->{$method}($url);
+		return $this->{$method . 'Json'}($url);
 	}
 
 	/**
@@ -47,6 +41,7 @@ abstract class AbstractEndpointFeatureTest extends TestCase
 		if (in_array($expected['status'], [200, 201]))
 		{
 			$this->assertTrue($content->success);
+			$this->assertArrayHasKey('data', (array) $content);
 		}
 		else
 		{

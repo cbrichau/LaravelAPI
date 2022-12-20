@@ -17,13 +17,7 @@ class AuthenticationTest extends AbstractEndpointUnitTest
 		{
 			foreach ($methods as $method)
 			{
-				$headers['accept'] = 'application/json';
-				if ($method === 'post')
-				{
-					$headers['content-type'] = 'application/json';
-				}
-
-				$response = $this->withHeaders($headers)->{$method}($endpoint);
+				$response = $this->{$method . 'Json'}($endpoint);
 				$content = json_decode($response->getContent());
 
 				$response->assertStatus(401);

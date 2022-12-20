@@ -13,6 +13,9 @@ class MandatoryHeadersTest extends AbstractEndpointUnitTest
 	 */
 	public function test_endpoints_without_headers(): void
 	{
+		$this->endpoints['/api/auth/sign-up'] = ['post'];
+		$this->endpoints['/api/auth/sign-in'] = ['post'];
+
 		foreach ($this->endpoints as $endpoint => $methods)
 		{
 			foreach ($methods as $method)
