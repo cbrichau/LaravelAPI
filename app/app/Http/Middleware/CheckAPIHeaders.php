@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class CheckAPIHeaders
 {
@@ -12,7 +15,7 @@ class CheckAPIHeaders
 	 *
 	 * @param Request $request
 	 * @param Closure $next
-	 * @return Closure
+	 * @return Closure|JsonResponse
 	 */
 	public function handle(Request $request, Closure $next)
 	{

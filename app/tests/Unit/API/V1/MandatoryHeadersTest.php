@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\API\V1;
 
+use stdClass;
+use Exception;
 use Tests\Unit\API\V1\AbstractEndpointUnitTest;
 
 class MandatoryHeadersTest extends AbstractEndpointUnitTest
@@ -21,9 +25,10 @@ class MandatoryHeadersTest extends AbstractEndpointUnitTest
 			foreach ($methods as $method)
 			{
 				$response = $this->{$method}($endpoint);
-				$content = json_decode($response->getContent());
 
 				$response->assertStatus(400);
+
+				$content = $this->extractResponseContent($response);
 
 				$expectedErrors = ['MISSING_HEADER_ACCEPT'];
 				if (in_array($method, ['post', 'put', 'patch']))

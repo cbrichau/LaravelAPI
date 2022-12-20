@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Controller\API\V1;
 
 use Tests\TestCase;
@@ -17,26 +19,27 @@ abstract class AbstractEndpointFeatureTest extends TestCase
 	 */
 	protected function request(string $method, string $url): TestResponse
 	{
-		$this->actingAs(User::find(1));
+		/** @var User $authenticatedUser */
+		$authenticatedUser = User::find(1);
 
-		return $this->{$method . 'Json'}($url);
+		return $this->actingAs($authenticatedUser)->{$method . 'Json'}($url);
 	}
 
 	/**
 	 * Helper method to check the test's response broadly matches the expected response
 	 * (= same status, content, and headers).
 	 * 
-	 * @param TestReponse $response
-	 * @param array $expected
+	 * @param TestResponse $response
+	 * @param array<string, array<int, string>|int> $expected
 	 * @return void
 	 */
 	protected function assertValidJSONResponse(TestResponse $response, array $expected): void
 	{
 		// Status
-		$response->assertStatus($expected['status']);
+		$response->assertStatus((int) $expected['status']);
 
 		// Content
-		$content = json_decode($response->getContent());
+		$content = $this->extractResponseContent($response);
 
 		if (in_array($expected['status'], [200, 201]))
 		{
@@ -55,9 +58,14 @@ abstract class AbstractEndpointFeatureTest extends TestCase
 			$response->assertHeader('content-type', 'application/json');
 		}
 
-		foreach (($expected['headers'] ?? []) as $name => $value)
+		if (isset($expected['headers']))
 		{
-			$response->assertHeader($name, $value);
+			/** @var array<string, string> $headers */
+			$headers = $expected['headers'];
+			foreach ($headers as $name => $value)
+			{
+				$response->assertHeader($name, $value);
+			}
 		}
 	}
 }

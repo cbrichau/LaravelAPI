@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\User;
@@ -14,7 +16,7 @@ class Basket extends Model
 	use HasFactory;
 
 	/**
-	 * @return BelongsTo<User>
+	 * @return BelongsTo<User, Basket>
 	 */
 	public function user(): BelongsTo
 	{

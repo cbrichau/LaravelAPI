@@ -1,15 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\API\V1;
 
 use DateTime;
+use stdClass;
 use App\Models\Basket;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreBasketRequest;
-use App\Http\Requests\UpdateBasketRequest;
 use App\Http\Controllers\API\APIController;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -20,15 +20,18 @@ class BasketController extends APIController
 	/**
 	 * Adds the given product to the given basket.
 	 * 
+	 * @param int $basketId
+	 * @param int $productId
 	 * @return JsonResponse
 	 */
-	public function addItem(int $basketId, int $productId, Request $request): JsonResponse
+	public function addItem(int $basketId, int $productId): JsonResponse
 	{
-		if (($errors = $this->findErrorsInRequest($request)) !== [])
+		if (($errors = $this->findErrorsInRequest($basketId, $productId, 'add')) !== [])
 		{
 			return $this->returnErrorResponse(400, $errors);
 		}
 
+		/** @var Basket $basket */
 		$basket = Basket::find($basketId);
 
 		$basket->products()->sync([
@@ -41,15 +44,18 @@ class BasketController extends APIController
 	/**
 	 * Removes the given product from the given basket.
 	 *
+	 * @param int $basketId
+	 * @param int $productId
 	 * @return JsonResponse
 	 */
-	public function removeItem(int $basketId, int $productId, Request $request): JsonResponse
+	public function removeItem(int $basketId, int $productId): JsonResponse
 	{
-		if (($errors = $this->findErrorsInRequest($request)) !== [])
+		if (($errors = $this->findErrorsInRequest($basketId, $productId, 'remove')) !== [])
 		{
 			return $this->returnErrorResponse(400, $errors);
 		}
 
+		/** @var Basket $basket */
 		$basket = Basket::find($basketId);
 
 		$basket->products()->sync([
@@ -63,11 +69,21 @@ class BasketController extends APIController
 		Support methods
 	\* *************************************** */
 
-	private function findErrorsInRequest(Request $request): array
+	/**
+	 * Helper method that checks the request is valid.
+	 *
+	 * @param int $basketId
+	 * @param int $productId
+	 * @param string $action
+	 * @return array<string, string>
+	 */
+	private function findErrorsInRequest(int $basketId, int $productId, string $action): array
 	{
-		$basket = Basket::find($request->basketId);
-
-		if ($basket === null || $basket->user->id !== Auth::user()->id)
+		if (
+			($basket = Basket::find($basketId)) === null ||
+			$basket->user === null ||
+			$basket->user->id !== Auth::id()
+		)
 		{
 			return ['NO_BASKET' => "The basket doesn't exist or doesn't belong to the authenticated user."];
 		}
@@ -77,19 +93,20 @@ class BasketController extends APIController
 			return ['CLOSED_BASKET' => 'The basket is checked out, it can no longer be modified.'];
 		}
 
-		if (Product::find($request->productId) === null)
+		if (Product::find($productId) === null)
 		{
 			$errors['BAD_PRODUCT'] = 'The product does not exist.';
 		}
 		else
 		{
-			$productInBasket = $basket->products->find($request->productId);
+			/** @var ?stdClass $productInBasket */
+			$productInBasket = $basket->products->find($productId);
 
-			if ($request->getMethod() === 'POST' && $productInBasket !== null && $productInBasket->pivot->removal_date === null)
+			if ($action === 'add' && $productInBasket !== null && $productInBasket->pivot->removal_date === null)
 			{
 				$errors['PRODUCT_IS_ALREADY_ADDED'] = "The basket already contains that product.";
 			}
-			elseif ($request->getMethod() === 'DELETE' && ($productInBasket === null || $productInBasket->pivot->removal_date !== null))
+			elseif ($action === 'remove' && ($productInBasket === null || $productInBasket->pivot->removal_date !== null))
 			{
 				$errors['PRODUCT_IS_NOT_AVAILABLE'] = "The basket doesn't contain that product.";
 			}

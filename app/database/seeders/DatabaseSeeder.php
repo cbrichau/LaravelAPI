@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -36,15 +38,21 @@ class DatabaseSeeder extends Seeder
 		// Makes non-random assignments so we can always rely on them when testing
 		$testUser = User::find(1);
 
+		/** @var Basket $basket1 */
 		$basket1 = Basket::find(1);
 		$basket1->user()->associate($testUser);
 		$basket1->products()->attach(1);
-		$basket1->checkout_date = new DateTime();
+		$basket1->checkout_date = (new DateTime())->format('Y-m-d H:i:s');
 		$basket1->save();
 
+		/** @var Basket $basket2 */
 		$basket2 = Basket::find(2);
 		$basket2->user()->associate($testUser);
 		$basket2->products()->attach(1);
+		if ($basket2->products->find(2))
+		{
+			$basket2->products()->detach(2);
+		}
 		$basket2->save();
 	}
 }

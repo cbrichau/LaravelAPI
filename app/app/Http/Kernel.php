@@ -42,7 +42,7 @@ class Kernel extends HttpKernel
 			// \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
 			'throttle:api',
 			\Illuminate\Routing\Middleware\SubstituteBindings::class,
-			'checkAPIHeaders' => \App\Http\Middleware\CheckAPIHeaders::class
+			\App\Http\Middleware\CheckAPIHeaders::class
 		],
 	];
 
@@ -71,7 +71,7 @@ class Kernel extends HttpKernel
 	 *
 	 * This forces non-global middleware to always be in the given order.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	protected $middlewarePriority = [
 		\App\Http\Middleware\CheckAPIHeaders::class,

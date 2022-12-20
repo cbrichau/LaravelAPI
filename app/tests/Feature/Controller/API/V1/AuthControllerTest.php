@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Controller\API\V1;
 
 use Tests\Feature\Controller\API\V1\AbstractEndpointFeatureTest;
@@ -9,6 +11,9 @@ class AuthControllerTest extends AbstractEndpointFeatureTest
 	const VALID_EMAIL = 'james.bond@example.com';
 	const VALID_PASSWORD = '007';
 
+	/**
+	 * @var array<string, array<string, string>> $payload
+	 */
 	private array $payload = [];
 
 	public function setUp(): void
@@ -34,7 +39,7 @@ class AuthControllerTest extends AbstractEndpointFeatureTest
 
 		$response->assertStatus($expectedStatus);
 
-		$content = json_decode($response->getContent());
+		$content = $this->extractResponseContent($response);
 
 		$this->assertTrue($content->success);
 		$this->assertTrue(isset($content->data->token));
@@ -68,7 +73,7 @@ class AuthControllerTest extends AbstractEndpointFeatureTest
 
 		$response->assertStatus(400);
 
-		$content = json_decode(str_replace('\u0000*\u0000', '', $response->getContent()));
+		$content = $this->extractResponseContent($response);
 
 		$this->assertFalse($content->success);
 		$this->assertSame(["The email field is required."], $content->errors->messages->email);
@@ -84,7 +89,7 @@ class AuthControllerTest extends AbstractEndpointFeatureTest
 
 		$response->assertStatus(401);
 
-		$content = json_decode($response->getContent());
+		$content = $this->extractResponseContent($response);
 
 		$this->assertFalse($content->success);
 		$this->assertSame(["Wrong email and/or password"], $content->errors);

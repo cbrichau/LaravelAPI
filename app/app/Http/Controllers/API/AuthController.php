@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\API;
 
 use App\Models\User;
@@ -15,6 +17,7 @@ class AuthController extends APIController
 	/**
 	 * Registers a new user.
 	 *
+	 * @param Request $request
 	 * @return JsonResponse
 	 */
 	public function signUp(Request $request): JsonResponse
@@ -48,6 +51,7 @@ class AuthController extends APIController
 	/**
 	 * Logs in a valid user.
 	 *
+	 * @param Request $request
 	 * @return JsonResponse
 	 */
 	public function signIn(Request $request): JsonResponse
@@ -69,14 +73,16 @@ class AuthController extends APIController
 			'password' => $payload['password']
 		];
 
-		if (Auth::attempt($credentials) === false)
+		if (
+			Auth::attempt($credentials) === false ||
+			($user = User::where('email', $request->email)->first()) === null
+		)
 		{
 			return $this->returnErrorResponse(401, ['Wrong email and/or password']);
 		}
 
-		$user = User::where('email', $request->email)->first();
 		$data = [
-			'name' =>  $user->name,
+			'name' => $user->name,
 			'token' =>  $user->createToken('userToken')->plainTextToken
 		];
 

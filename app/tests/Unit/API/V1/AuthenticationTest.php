@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\API\V1;
 
+use stdClass;
+use Exception;
 use Tests\Unit\API\V1\AbstractEndpointUnitTest;
 
 class AuthenticationTest extends AbstractEndpointUnitTest
@@ -18,7 +22,8 @@ class AuthenticationTest extends AbstractEndpointUnitTest
 			foreach ($methods as $method)
 			{
 				$response = $this->{$method . 'Json'}($endpoint);
-				$content = json_decode($response->getContent());
+
+				$content = $this->extractResponseContent($response);
 
 				$response->assertStatus(401);
 				$this->assertSame('Unauthenticated.', $content->message);

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\API\V1;
 
 use DateTime;
+use stdClass;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
 use App\Http\Controllers\API\APIController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -15,9 +17,10 @@ class ProductController extends APIController
 	/**
 	 * Returns a csv file of the products that have been removed from a basket.
 	 *
-	 * @return BinaryFileResponse
+	 * @param Request $request
+	 * @return BinaryFileResponse|JsonResponse
 	 */
-	public function downloadLosses(Request $request): BinaryFileResponse
+	public function downloadLosses(Request $request)
 	{
 		$filename = 'losses-' . (new DateTime())->format('Y-m-dTh:i:s') . '.csv';
 
@@ -46,7 +49,11 @@ class ProductController extends APIController
 		/** @var stdClass $loss */
 		foreach ($losses->get() as $loss)
 		{
-			if (fputcsv($handle, json_decode(json_encode($loss), true)) === false)
+			if (
+				($json = json_encode($loss)) === false ||
+				($data = json_decode($json, true)) === false ||
+				(fputcsv($handle, $data)) === false // @phpstan-ignore-line
+			)
 			{
 				return $this->returnErrorResponse(500, ['Could not write in file']);
 			}

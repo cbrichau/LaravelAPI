@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Controller\API\V1;
 
+use stdClass;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\TestResponse;
 use Tests\Feature\Controller\API\V1\AbstractEndpointFeatureTest;
 
-class AddToAndRemoveFromBasket extends AbstractEndpointFeatureTest
+class AddToAndRemoveFromBasketTest extends AbstractEndpointFeatureTest
 {
 	const BASKET_INVALID_ID = 0;
 	const CHECKED_OUT_BASKET_ID = 1;
@@ -35,6 +38,7 @@ class AddToAndRemoveFromBasket extends AbstractEndpointFeatureTest
 				'status' => ($method === 'post' ? 201 : 200)
 			]);
 
+			/** @var array<stdClass> $matchingItems */
 			$matchingItems = DB::table('basket_product')->where([
 				['basket_id', '=', self::BASKET_VALID_ID],
 				['product_id', '=', self::PRODUCT_VALID_ID]
