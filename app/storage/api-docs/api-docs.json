@@ -512,10 +512,11 @@
                 "operationId": "downloadLosses",
                 "responses": {
                     "200": {
-                        "description": "Item added to basket.",
+                        "description": "Downloaded CSV file.",
                         "content": {
                             "application/json": {
-                                "schema": {}
+                                "schema": {},
+                                "example": ""
                             }
                         }
                     },
@@ -528,6 +529,37 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": "false"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "errors": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "Could not open file",
+                                                        "Could not write in file"
+                                                    ]
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"

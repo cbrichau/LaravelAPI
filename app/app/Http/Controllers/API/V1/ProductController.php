@@ -22,9 +22,8 @@ class ProductController extends APIController
 	 *   tags={"Product"},
 	 *   @OA\Response(
 	 *     response=200,
-	 *     description="Item added to basket.",
-	 *     @OA\JsonContent(
-	 *     ),
+	 *     description="Downloaded CSV file.",
+	 *     @OA\JsonContent(example=""),
 	 *   ),
 	 *   @OA\Response(
 	 *     response=401,
@@ -32,6 +31,22 @@ class ProductController extends APIController
 	 *     @OA\JsonContent(
 	 *       type="object",
 	 *       @OA\Property(property="message", type="string", example="Unauthenticated."),
+	 *     ),
+	 *   ),
+	 *   @OA\Response(
+	 *     response=500,
+	 *     description="Server error.",
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="success", type="bool", example="false"),
+	 *       @OA\Property(property="errors", type="object",
+	 *         @OA\Property(property="errors", type="array", example={
+	 *             "Could not open file",
+	 *             "Could not write in file",
+	 *           },
+	 *           @OA\Items(type="string"),
+	 *         ),
+	 *       ),
 	 *     ),
 	 *   ),
 	 * )

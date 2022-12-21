@@ -33,6 +33,4 @@ $config = (new Config())
 		],
 	]);
 
-
-
 return $config;
