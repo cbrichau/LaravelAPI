@@ -8,9 +8,6 @@ use Tests\Feature\Controller\API\V1\AbstractEndpointFeatureTest;
 
 class AuthControllerTest extends AbstractEndpointFeatureTest
 {
-	public const VALID_EMAIL = 'james.bond@example.com';
-	public const VALID_PASSWORD = '007';
-
 	/**
 	 * @var array<string, array<string, string>> $payload
 	 */
@@ -28,8 +25,8 @@ class AuthControllerTest extends AbstractEndpointFeatureTest
 		];
 
 		$this->payload['sign-in'] = [
-			'email' => self::VALID_EMAIL,
-			'password' => self::VALID_PASSWORD
+			'email' => $_ENV['INTERNAL_USER_EMAIL'],
+			'password' => $_ENV['INTERNAL_USER_PASSWORD']
 		];
 	}
 

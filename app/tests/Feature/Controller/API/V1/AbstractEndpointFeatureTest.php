@@ -20,7 +20,7 @@ abstract class AbstractEndpointFeatureTest extends TestCase
 	protected function request(string $method, string $url): TestResponse
 	{
 		/** @var User $authenticatedUser */
-		$authenticatedUser = User::find(1);
+		$authenticatedUser = User::find($_ENV['INTERNAL_USER_ID']);
 
 		return $this->actingAs($authenticatedUser)->{$method . 'Json'}($url);
 	}

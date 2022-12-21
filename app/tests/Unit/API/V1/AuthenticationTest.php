@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\API\V1;
 
-use stdClass;
-use Exception;
 use Tests\Unit\API\V1\AbstractEndpointUnitTest;
 
 class AuthenticationTest extends AbstractEndpointUnitTest

@@ -16,19 +16,42 @@ class ProductSeeder extends Seeder
 	 */
 	public function run()
 	{
+		$this->createAssignmentInput();
+		$this->createSampleProducts();
+	}
+
+	/**
+	 * Creates the products prodvided in the assignment (c.f. /products.json).
+	 *
+	 * @return void
+	 */
+	private function createAssignmentInput(): void
+	{
 		$assignmentInput = [
-			['name' => 'Pioneer DJ Mixer', 'price' => 699],
-			['name' => 'Roland Wave Sampler', 'price' => 485],
-			['name' => 'Reloop Headphone', 'price' => 159],
-			['name' => 'Rokit Monitor', 'price' => 189.9],
-			['name' => 'Fisherprice Baby Mixer', 'price' => 120],
+			// name, price
+			['Pioneer DJ Mixer', 699],
+			['Roland Wave Sampler', 485],
+			['Reloop Headphone', 159],
+			['Rokit Monitor', 189.9],
+			['Fisherprice Baby Mixer', 120],
 		];
 
 		foreach ($assignmentInput as $product)
 		{
-			Product::factory()->create($product);
+			Product::factory()->create([
+				'name' => $product[0],
+				'price' => $product[1]
+			]);
 		}
+	}
 
-		Product::factory(10)->create();
+	/**
+	 * Creates extra sample products.
+	 *
+	 * @return void
+	 */
+	private function createSampleProducts(): void
+	{
+		Product::factory(20)->create();
 	}
 }

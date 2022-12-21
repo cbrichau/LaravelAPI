@@ -18,10 +18,14 @@ class UserFactory extends Factory
 	 */
 	public function definition()
 	{
+		$fakeCreationDate = $this->faker->dateTimeBetween('-5 years', '-1 week');
+
 		return [
 			'name' => fake()->name(),
 			'email' => fake()->unique()->safeEmail(),
-			'email_verified_at' => now(),
+			'created_at' => $fakeCreationDate,
+			'updated_at' => $fakeCreationDate,
+			'email_verified_at' => $fakeCreationDate,
 			'password' => Hash::make(fake()->password()),
 			'remember_token' => Str::random(10),
 		];
