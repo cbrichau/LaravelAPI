@@ -42,7 +42,6 @@ class Kernel extends HttpKernel
 			// \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
 			'throttle:api',
 			\Illuminate\Routing\Middleware\SubstituteBindings::class,
-			\App\Http\Middleware\CheckAPIHeaders::class
 		],
 	];
 
@@ -63,7 +62,8 @@ class Kernel extends HttpKernel
 		'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
 		'signed' => \App\Http\Middleware\ValidateSignature::class,
 		'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-		'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class
+		'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+		'checkJSONHeaders' => \App\Http\Middleware\CheckJSONHeaders::class,
 	];
 
 	/**
@@ -74,7 +74,7 @@ class Kernel extends HttpKernel
 	 * @var array<string>
 	 */
 	protected $middlewarePriority = [
-		\App\Http\Middleware\CheckAPIHeaders::class,
+		\App\Http\Middleware\CheckJSONHeaders::class,
 		\App\Http\Middleware\Authenticate::class
 	];
 }

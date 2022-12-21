@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\API\V1;
 
-use stdClass;
-use Exception;
 use Tests\Unit\API\V1\AbstractEndpointUnitTest;
 
 class MandatoryHeadersTest extends AbstractEndpointUnitTest
@@ -25,6 +23,17 @@ class MandatoryHeadersTest extends AbstractEndpointUnitTest
 			foreach ($methods as $method)
 			{
 				$response = $this->{$method}($endpoint);
+
+				if ($endpoint == '/api/v1/products/download-losses')
+				{
+					/*
+					This is the only endpoint that doesn't return JSON.
+					On authentication failure, it redirects to api/401 to fail gracefully.
+					c.f. /app/app/Http/Controllers/API/AuthController.php @unauthorized
+					*/
+					$response->assertStatus(302);
+					continue;
+				}
 
 				$response->assertStatus(400);
 

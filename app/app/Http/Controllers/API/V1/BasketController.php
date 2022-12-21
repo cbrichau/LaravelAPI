@@ -175,8 +175,7 @@ class BasketController extends APIController
 			($basket = Basket::find($basketId)) === null ||
 			$basket->user === null ||
 			$basket->user->id !== Auth::id()
-		)
-		{
+		) {
 			return ['NO_BASKET' => "The basket doesn't exist or doesn't belong to the authenticated user."];
 		}
 

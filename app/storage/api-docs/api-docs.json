@@ -553,10 +553,7 @@
                     "200": {
                         "description": "Downloaded CSV file.",
                         "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
+                            "text/csv": {}
                         }
                     },
                     "401": {

@@ -13,7 +13,12 @@ class DownloadLossesTest extends AbstractEndpointFeatureTest
 {
 	private function callEndpoint(string $queryParameters = ''): TestResponse
 	{
-		return $this->request('get', '/api/v1/products/download-losses' . $queryParameters);
+		/** @var User $authenticatedUser */
+		$authenticatedUser = User::find(1);
+
+		return $this->actingAs($authenticatedUser)
+			->withHeaders([['accept' => 'text/csv']])
+			->get('/api/v1/products/download-losses' . $queryParameters);
 	}
 
 	private function assertSuccessfulDownload(TestResponse $response): void

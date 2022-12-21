@@ -33,7 +33,9 @@ class ProductController extends APIController
 	 *   @OA\Response(
 	 *     response=200,
 	 *     description="Downloaded CSV file.",
-	 *     @OA\JsonContent(example=""),
+	 *     @OA\MediaType(
+	 *       mediaType="text/csv",
+	 *     ),
 	 *   ),
 	 *   @OA\Response(
 	 *     response=401,
@@ -69,8 +71,9 @@ class ProductController extends APIController
 	public function downloadLosses(Request $request)
 	{
 		$filename = 'losses-' . (new DateTime())->format('Y-m-dTh:i:s') . '.csv';
+		$filepath = public_path($filename);
 
-		if (($handle = fopen($filename, 'w+')) === false)
+		if (($handle = fopen($filepath, 'w+')) === false)
 		{
 			return $this->returnErrorResponse(500, ['Could not open file']);
 		}
@@ -89,8 +92,7 @@ class ProductController extends APIController
 		if (
 			is_array($request->query()) &&
 			($query = (new ProductQueryFilter())->convertToQuery($request->query())) !== []
-		)
-		{
+		) {
 			$losses->where($query);
 		}
 
@@ -101,14 +103,13 @@ class ProductController extends APIController
 				($json = json_encode($loss)) === false ||
 				($data = json_decode($json, true)) === false ||
 				(fputcsv($handle, $data)) === false // @phpstan-ignore-line
-			)
-			{
+			) {
 				return $this->returnErrorResponse(500, ['Could not write in file']);
 			}
 		}
 
 		fclose($handle);
 
-		return response()->download($filename, $filename, ['content-type' => 'text/csv'])->deleteFileAfterSend();
+		return response()->download($filepath, $filename, ['content-type' => 'text/csv'])->deleteFileAfterSend();
 	}
 }

@@ -26,9 +26,12 @@ return new class extends Migration
 	 */
 	public function down()
 	{
-		Schema::table('basket_product', function (Blueprint $table)
+		if (Schema::hasColumn('basket_product', 'date_removed'))
 		{
-			$table->dropColumn('date_removed');
-		});
+			Schema::table('basket_product', function (Blueprint $table)
+			{
+				$table->dropColumn('date_removed');
+			});
+		}
 	}
 };

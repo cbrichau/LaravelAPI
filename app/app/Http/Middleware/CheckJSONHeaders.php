@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-class CheckAPIHeaders
+class CheckJSONHeaders
 {
 	/**
 	 * Checks the request contains JSON headers.

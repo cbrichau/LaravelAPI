@@ -16,9 +16,12 @@ use App\Http\Controllers\API\V1\ProductController;
 |
 */
 
+Route::get('401', [AuthController::class, 'unauthorized']);
+
 Route::group(
 	[
 		'prefix' => 'auth',
+		'middleware' => ['checkJSONHeaders']
 	],
 	function ()
 	{
@@ -31,7 +34,7 @@ Route::group(
 Route::group(
 	[
 		'prefix' => 'v1',
-		'middleware' => ['auth:sanctum']
+		'middleware' => ['auth:sanctum', 'checkJSONHeaders']
 	],
 	function ()
 	{

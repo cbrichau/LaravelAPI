@@ -221,4 +221,16 @@ class AuthController extends APIController
 
 		return $this->returnSuccessResponse(200, $data);
 	}
+
+	/**
+	 * Returns the 401 standard reponse.
+	 * Used in /app/app/Http/Middleware/Authenticate.php to enable /app/app/Http/Controllers/API/V1/ProductController.php
+	 * to fail gracefully when requesting a CSV rather than the standard JSON response.
+	 *
+	 * @return JsonResponse
+	 */
+	public function unauthorized(): JsonResponse
+	{
+		return response()->json(['message' => 'Unauthenticated.'], 401);
+	}
 }
