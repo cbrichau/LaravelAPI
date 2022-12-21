@@ -24,12 +24,12 @@ class ProductController extends APIController
 	 *   summary="Download the losses as a .csv file",
 	 *   @OA\Parameter(name="basket_id[is]", in="query"),
 	 *   @OA\Parameter(name="product_id[is]", in="query"),
-	 *   @OA\Parameter(name="basket_product.created_at[greaterThan]", in="query"),
-	 *   @OA\Parameter(name="basket_product.created_at[lowerThan]", in="query"),
-	 *   @OA\Parameter(name="removal_date[greaterThan]", in="query"),
-	 *   @OA\Parameter(name="removal_date[lowerThan]", in="query"),
-	 *   @OA\Parameter(name="price[greaterThan]", in="query"),
-	 *   @OA\Parameter(name="price[lowerThan]", in="query"),
+	 *   @OA\Parameter(name="add_to_basket_date[greaterThan]", in="query"),
+	 *   @OA\Parameter(name="add_to_basket_date[lowerThan]", in="query"),
+	 *   @OA\Parameter(name="removed_from_basket_date[greaterThan]", in="query"),
+	 *   @OA\Parameter(name="removed_from_basket_date[lowerThan]", in="query"),
+	 *   @OA\Parameter(name="product_price[greaterThan]", in="query"),
+	 *   @OA\Parameter(name="product_price[lowerThan]", in="query"),
 	 *   @OA\Response(
 	 *     response=200,
 	 *     description="Downloaded CSV file.",
@@ -78,7 +78,7 @@ class ProductController extends APIController
 			return $this->returnErrorResponse(500, ['Could not open file']);
 		}
 
-		if (fputcsv($handle, ['basket_id', 'product_id', 'creation_date', 'removal_date', 'product_name', 'product_price']) === false)
+		if (fputcsv($handle, ['basket_id', 'product_id', 'add_to_basket_date', 'removed_from_basket_date', 'basket_checkout_date', 'product_name', 'product_price']) === false)
 		{
 			return $this->returnErrorResponse(500, ['Could not write in file']);
 		}
@@ -86,7 +86,7 @@ class ProductController extends APIController
 		$losses = DB::table('basket_product')
 			->join('baskets', 'baskets.id', '=', 'basket_id')
 			->join('products', 'products.id', '=', 'product_id')
-			->select('basket_id', 'product_id', 'basket_product.created_at', 'removal_date', 'products.name', 'products.price')
+			->select('basket_id', 'product_id', 'basket_product.created_at', 'removal_date', 'checkout_date', 'products.name', 'products.price')
 			->whereNotNull('removal_date');
 
 		if (

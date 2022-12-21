@@ -14,9 +14,21 @@ class ProductQueryFilter extends AbstractQueryFilter
 	private array $allowedFilters = [
 		'basket_id' => ['is'],
 		'product_id' => ['is'],
-		'basket_product.created_at' => ['greaterThan', 'lowerThan'],
-		'removal_date' => ['greaterThan', 'lowerThan'],
-		'price' => ['greaterThan', 'lowerThan']
+		'add_to_basket_date' => ['greaterThan', 'lowerThan'],
+		'removed_from_basket_date' => ['greaterThan', 'lowerThan'],
+		'product_price' => ['greaterThan', 'lowerThan']
+	];
+
+	/**
+	 * @var array<string, string> $dbColumns
+	 */
+	private array $dbColumns = [
+		'basket_id' => 'basket_id',
+		'product_id' => 'product_id',
+		'add_to_basket_date' => 'basket_product.created_at',
+		'removed_from_basket_date' => 'removal_date',
+		'product_price' => 'price',
+		// 'basket_checkout_date', 'product_name',
 	];
 
 	/**
@@ -37,7 +49,11 @@ class ProductQueryFilter extends AbstractQueryFilter
 				{
 					if (isset($this->operationsMap[$operator]))
 					{
-						$query[] = [$property, $this->operationsMap[$operator], $operand];
+						$query[] = [
+							$this->dbColumns[$property],
+							$this->operationsMap[$operator],
+							$operand
+						];
 					}
 				}
 			}

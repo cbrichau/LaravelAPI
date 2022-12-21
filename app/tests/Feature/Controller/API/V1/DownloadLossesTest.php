@@ -14,7 +14,7 @@ class DownloadLossesTest extends AbstractEndpointFeatureTest
 	private function callEndpoint(string $queryParameters = ''): TestResponse
 	{
 		/** @var User $authenticatedUser */
-		$authenticatedUser = User::find(1);
+		$authenticatedUser = User::find($_ENV['INTERNAL_USER_ID']);
 
 		return $this->actingAs($authenticatedUser)
 			->withHeaders([['accept' => 'text/csv']])
@@ -60,14 +60,14 @@ class DownloadLossesTest extends AbstractEndpointFeatureTest
 
 			'product_id[is]=1',
 
-			'basket_product.created_at[greaterThan]=1990-01-01',
-			'basket_product.created_at[lowerThan]=2090-01-01',
+			'add_to_basket_date[greaterThan]=1990-01-01',
+			'add_to_basket_date[lowerThan]=2090-01-01',
 
-			'removal_date[greaterThan]=1990-01-01',
-			'removal_date[lowerThan]=2090-01-01',
+			'removed_from_basket_date[greaterThan]=1990-01-01',
+			'removed_from_basket_date[lowerThan]=2090-01-01',
 
-			'price[greaterThan]=0',
-			'price[lowerThan]=1000000',
+			'product_price[greaterThan]=0',
+			'product_price[lowerThan]=1000000',
 		];
 
 		$response = $this->callEndpoint('?' . implode('&', $allValidFilters));
@@ -82,7 +82,7 @@ class DownloadLossesTest extends AbstractEndpointFeatureTest
 	public function test_download_losses_with_external_user(): void
 	{
 		/** @var User $authenticatedUser */
-		$authenticatedUser = User::find(2);
+		$authenticatedUser = User::find($_ENV['EXTERNAL_USER_ID']);
 
 		$response = $this->actingAs($authenticatedUser)->getJson('/api/v1/products/download-losses');
 
