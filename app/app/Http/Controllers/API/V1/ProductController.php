@@ -10,16 +10,26 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\API\APIController;
+use App\QueryFilters\API\V1\ProductQueryFilter;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ProductController extends APIController
 {
 	/**
 	 * @OA\Get(
-	 *   path="/api/v1/products/download-losses",
 	 *   security={{"sanctum": {}}},
 	 *   operationId="downloadLosses",
 	 *   tags={"Product"},
+	 *   path="/api/v1/products/download-losses",
+	 *   summary="Download the losses as a .csv file",
+	 *   @OA\Parameter(name="basket_id[is]", in="query"),
+	 *   @OA\Parameter(name="product_id[is]", in="query"),
+	 *   @OA\Parameter(name="basket_product.created_at[greaterThan]", in="query"),
+	 *   @OA\Parameter(name="basket_product.created_at[lowerThan]", in="query"),
+	 *   @OA\Parameter(name="removal_date[greaterThan]", in="query"),
+	 *   @OA\Parameter(name="removal_date[lowerThan]", in="query"),
+	 *   @OA\Parameter(name="price[greaterThan]", in="query"),
+	 *   @OA\Parameter(name="price[lowerThan]", in="query"),
 	 *   @OA\Response(
 	 *     response=200,
 	 *     description="Downloaded CSV file.",
@@ -76,10 +86,11 @@ class ProductController extends APIController
 			->select('basket_id', 'product_id', 'basket_product.created_at', 'removal_date', 'products.name', 'products.price')
 			->whereNotNull('removal_date');
 
-		$filters = $request->query();
-		if (isset($filters['productId']))
-		{
-			$losses->where('product_id', '=', $filters['productId']); //à sécuriser
+		if (
+			is_array($request->query()) &&
+			($query = (new ProductQueryFilter())->convertToQuery($request->query())) !== []
+		) {
+			$losses->where($query);
 		}
 
 		/** @var stdClass $loss */

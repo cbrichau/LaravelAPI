@@ -11,22 +11,15 @@ use Tests\Feature\Controller\API\V1\AbstractEndpointFeatureTest;
 
 class DownloadLossesTest extends AbstractEndpointFeatureTest
 {
-	private function callEndpoint(): TestResponse
+	private function callEndpoint(string $queryParameters = ''): TestResponse
 	{
-		return $this->request('get', '/api/v1/products/download-losses');
+		return $this->request('get', '/api/v1/products/download-losses' . $queryParameters);
 	}
 
-	/* ******************************************** *\
-		Happy flow
-	\* ******************************************** */
-
-	public function test_download_losses(): void
+	private function assertSuccessfulDownload(TestResponse $response): void
 	{
-		$response = $this->callEndpoint();
-
-		// Enables deleteFileAfterSend().
 		ob_start();
-		$response->sendContent();
+		$response->sendContent(); //This enables deleteFileAfterSend(), c.f. \app\app\Http\Controllers\API\V1\ProductController.php
 		ob_end_clean();
 
 		$response->assertStatus(200);
@@ -41,16 +34,45 @@ class DownloadLossesTest extends AbstractEndpointFeatureTest
 	}
 
 	/* ******************************************** *\
+		Happy flow
+	\* ******************************************** */
+
+	public function test_download_losses(): void
+	{
+		$response = $this->callEndpoint();
+
+		$this->assertSuccessfulDownload($response);
+	}
+
+	/* ******************************************** *\
 		Extended happy flow
 	\* ******************************************** */
 
-	// Add tests with filters
+	public function test_download_losses_with_valid_filters(): void
+	{
+		$allValidFilters = [
+			'basket_id[is]=1',
+
+			'product_id[is]=1',
+
+			'basket_product.created_at[greaterThan]=1990-01-01',
+			'basket_product.created_at[lowerThan]=2090-01-01',
+
+			'removal_date[greaterThan]=1990-01-01',
+			'removal_date[lowerThan]=2090-01-01',
+
+			'price[greaterThan]=0',
+			'price[lowerThan]=1000000',
+		];
+
+		$response = $this->callEndpoint('?' . implode('&', $allValidFilters));
+
+		$this->assertSuccessfulDownload($response);
+	}
 
 	/* ******************************************** *\
 		Unhappy flow
 	\* ******************************************** */
-
-	// Add tests with invalid filters
 
 	public function test_download_losses_with_external_user(): void
 	{
@@ -60,5 +82,15 @@ class DownloadLossesTest extends AbstractEndpointFeatureTest
 		$response = $this->actingAs($authenticatedUser)->getJson('/api/v1/products/download-losses');
 
 		$response->assertStatus(403);
+	}
+
+	public function test_download_losses_with_invalid_filters(): void
+	{
+		$invalidQueryFilters = '?imNotAFilter=badValue&meToo=0';
+
+		$response = $this->callEndpoint($invalidQueryFilters);
+
+		// Invalid filters are simply ignored, they do not trigger an error, so the file should be downloaded anyway.
+		$this->assertSuccessfulDownload($response);
 	}
 }

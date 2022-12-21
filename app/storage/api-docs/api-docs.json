@@ -10,6 +10,7 @@
                 "tags": [
                     "Authentication"
                 ],
+                "summary": "Create a new user.",
                 "operationId": "signUp",
                 "requestBody": {
                     "required": true,
@@ -153,6 +154,7 @@
                 "tags": [
                     "Authentication"
                 ],
+                "summary": "Log in an existing user.",
                 "operationId": "signIn",
                 "requestBody": {
                     "required": true,
@@ -278,22 +280,23 @@
                 }
             }
         },
-        "/api/v1/baskets/{paramBasketId}/products/{paramProductId}": {
+        "/api/v1/baskets/{basketId}/products/{productId}": {
             "post": {
                 "tags": [
                     "Basket"
                 ],
+                "summary": "Add a product to a basket.",
                 "operationId": "addItem",
                 "parameters": [
                     {
-                        "name": "paramBasketId",
+                        "name": "basketId",
                         "in": "path",
                         "description": "The basket's id",
                         "required": true,
                         "example": "2"
                     },
                     {
-                        "name": "paramProductId",
+                        "name": "productId",
                         "in": "path",
                         "description": "The product's id",
                         "required": true,
@@ -395,17 +398,18 @@
                 "tags": [
                     "Basket"
                 ],
+                "summary": "Remove a product from a basket.",
                 "operationId": "removeItem",
                 "parameters": [
                     {
-                        "name": "paramBasketId",
+                        "name": "basketId",
                         "in": "path",
                         "description": "The basket's id",
                         "required": true,
                         "example": "2"
                     },
                     {
-                        "name": "paramProductId",
+                        "name": "productId",
                         "in": "path",
                         "description": "The product's id",
                         "required": true,
@@ -509,7 +513,42 @@
                 "tags": [
                     "Product"
                 ],
+                "summary": "Download the losses as a .csv file",
                 "operationId": "downloadLosses",
+                "parameters": [
+                    {
+                        "name": "basket_id[is]",
+                        "in": "query"
+                    },
+                    {
+                        "name": "product_id[is]",
+                        "in": "query"
+                    },
+                    {
+                        "name": "basket_product.created_at[greaterThan]",
+                        "in": "query"
+                    },
+                    {
+                        "name": "basket_product.created_at[lowerThan]",
+                        "in": "query"
+                    },
+                    {
+                        "name": "removal_date[greaterThan]",
+                        "in": "query"
+                    },
+                    {
+                        "name": "removal_date[lowerThan]",
+                        "in": "query"
+                    },
+                    {
+                        "name": "price[greaterThan]",
+                        "in": "query"
+                    },
+                    {
+                        "name": "price[lowerThan]",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Downloaded CSV file.",
