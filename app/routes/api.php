@@ -35,8 +35,8 @@ Route::group(
 	],
 	function ()
 	{
-		Route::post('baskets/{paramBasketId}/products/{paramProductId}', [BasketController::class, 'addItem']);
-		Route::delete('baskets/{paramBasketId}/products/{paramProductId}', [BasketController::class, 'removeItem']);
+		Route::post('baskets/{basketId}/products/{productId}', [BasketController::class, 'addItem']);
+		Route::delete('baskets/{basketId}/products/{productId}', [BasketController::class, 'removeItem']);
 	}
 );
 

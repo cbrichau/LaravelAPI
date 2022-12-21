@@ -19,12 +19,13 @@ class BasketController extends APIController
 
 	/**
 	 * @OA\Post(
-	 *   path="/api/v1/baskets/{paramBasketId}/products/{paramProductId}",
 	 *   security={{"sanctum": {}}},
 	 *   operationId="addItem",
 	 *   tags={"Basket"},
-	 *   @OA\Parameter(name="paramBasketId", in="path", required=true, description="The basket's id", example="2"),
-	 *   @OA\Parameter(name="paramProductId", in="path", required=true, description="The product's id", example="1"),
+	 *   path="/api/v1/baskets/{basketId}/products/{productId}",
+	 *   summary="Add a product to a basket.",
+	 *   @OA\Parameter(name="basketId", in="path", required=true, description="The basket's id", example="2"),
+	 *   @OA\Parameter(name="productId", in="path", required=true, description="The product's id", example="1"),
 	 *   @OA\RequestBody(
 	 *     @OA\JsonContent(example=""),
 	 *   ),
@@ -67,15 +68,12 @@ class BasketController extends APIController
 	 *
 	 * Adds the given product to the given basket.
 	 *
-	 * @param string $paramBasketId
-	 * @param string $paramProductId
+	 * @param int $basketId
+	 * @param int $productId
 	 * @return JsonResponse
 	 */
-	public function addItem(string $paramBasketId, string $paramProductId): JsonResponse
+	public function addItem(int $basketId, int $productId): JsonResponse
 	{
-		$basketId = (int) $paramBasketId;
-		$productId = (int) $paramProductId;
-
 		if (($errors = $this->findErrorsInRequest($basketId, $productId, 'add')) !== [])
 		{
 			return $this->returnErrorResponse(400, $errors);
@@ -93,12 +91,13 @@ class BasketController extends APIController
 
 	/**
 	 * @OA\Delete(
-	 *   path="/api/v1/baskets/{paramBasketId}/products/{paramProductId}",
 	 *   security={{"sanctum": {}}},
 	 *   operationId="removeItem",
 	 *   tags={"Basket"},
-	 *   @OA\Parameter(name="paramBasketId", in="path", required=true, description="The basket's id", example="2"),
-	 *   @OA\Parameter(name="paramProductId", in="path", required=true, description="The product's id", example="1"),
+	 *   path="/api/v1/baskets/{basketId}/products/{productId}",
+	 *   summary="Remove a product from a basket.",
+	 *   @OA\Parameter(name="basketId", in="path", required=true, description="The basket's id", example="2"),
+	 *   @OA\Parameter(name="productId", in="path", required=true, description="The product's id", example="1"),
 	 *   @OA\RequestBody(
 	 *     @OA\JsonContent(example=""),
 	 *   ),
@@ -141,15 +140,12 @@ class BasketController extends APIController
 	 *
 	 * Removes the given product from the given basket.
 	 *
-	 * @param string $paramBasketId
-	 * @param string $paramProductId
+	 * @param int $basketId
+	 * @param int $productId
 	 * @return JsonResponse
 	 */
-	public function removeItem(string $paramBasketId, string $paramProductId): JsonResponse
+	public function removeItem(int $basketId, int $productId): JsonResponse
 	{
-		$basketId = (int) $paramBasketId;
-		$productId = (int) $paramProductId;
-
 		if (($errors = $this->findErrorsInRequest($basketId, $productId, 'remove')) !== [])
 		{
 			return $this->returnErrorResponse(400, $errors);

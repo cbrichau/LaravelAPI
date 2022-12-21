@@ -17,9 +17,10 @@ class AuthController extends APIController
 {
 	/**
 	 * @OA\Post(
-	 *   path="/api/auth/sign-up",
 	 *   operationId="signUp",
 	 *   tags={"Authentication"},
+	 *   path="/api/auth/sign-up",
+	 *   summary="Create a new user.",
 	 *   @OA\RequestBody(
 	 *     required=true,
 	 *     @OA\JsonContent(
@@ -120,9 +121,10 @@ class AuthController extends APIController
 
 	/**
 	 * @OA\Post(
-	 *   path="/api/auth/sign-in",
 	 *   operationId="signIn",
 	 *   tags={"Authentication"},
+	 *   path="/api/auth/sign-in",
+	 *   summary="Log in an existing user.",
 	 *   @OA\RequestBody(
 	 *     required=true,
 	 *     @OA\JsonContent(
