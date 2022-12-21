@@ -64,9 +64,9 @@ class BasketController extends APIController
 	 *     ),
 	 *   ),
 	 * )
-	 * 
+	 *
 	 * Adds the given product to the given basket.
-	 * 
+	 *
 	 * @param string $paramBasketId
 	 * @param string $paramProductId
 	 * @return JsonResponse
@@ -138,7 +138,7 @@ class BasketController extends APIController
 	 *     ),
 	 *   ),
 	 * )
-	 * 
+	 *
 	 * Removes the given product from the given basket.
 	 *
 	 * @param string $paramBasketId
@@ -179,8 +179,7 @@ class BasketController extends APIController
 			($basket = Basket::find($basketId)) === null ||
 			$basket->user === null ||
 			$basket->user->id !== Auth::id()
-		)
-		{
+		) {
 			return ['NO_BASKET' => "The basket doesn't exist or doesn't belong to the authenticated user."];
 		}
 

@@ -27,8 +27,7 @@ class CheckAPIHeaders
 		if (
 			in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) &&
 			(!$request->hasHeader('content-type') || $request->header('content-type') !== 'application/json')
-		)
-		{
+		) {
 			$errors['MISSING_HEADER_CONTENT_TYPE'] = 'POST, PUT and PATCH requests to the API  must include the "content-type = application/json" header.';
 		}
 

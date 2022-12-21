@@ -22,7 +22,7 @@ abstract class TestCase extends BaseTestCase
 
 	/**
 	 * Helper method to extract the test's response's content.
-	 * 
+	 *
 	 * @param TestResponse $response
 	 * @return stdClass
 	 */

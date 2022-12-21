@@ -8,8 +8,8 @@ use Tests\Feature\Controller\API\V1\AbstractEndpointFeatureTest;
 
 class AuthControllerTest extends AbstractEndpointFeatureTest
 {
-	const VALID_EMAIL = 'james.bond@example.com';
-	const VALID_PASSWORD = '007';
+	public const VALID_EMAIL = 'james.bond@example.com';
+	public const VALID_PASSWORD = '007';
 
 	/**
 	 * @var array<string, array<string, string>> $payload

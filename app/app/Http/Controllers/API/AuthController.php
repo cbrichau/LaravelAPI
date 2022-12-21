@@ -82,7 +82,7 @@ class AuthController extends APIController
 	 *     ),
 	 *   ),
 	 * )
-	 * 
+	 *
 	 * Registers a new user.
 	 *
 	 * @param Request $request
@@ -180,7 +180,7 @@ class AuthController extends APIController
 	 *     ),
 	 *   ),
 	 * )
-	 * 
+	 *
 	 * Logs in a valid user.
 	 *
 	 * @param Request $request
@@ -208,8 +208,7 @@ class AuthController extends APIController
 		if (
 			Auth::attempt($credentials) === false ||
 			($user = User::where('email', $request->email)->first()) === null
-		)
-		{
+		) {
 			return $this->returnErrorResponse(401, ['Wrong email and/or password']);
 		}
 

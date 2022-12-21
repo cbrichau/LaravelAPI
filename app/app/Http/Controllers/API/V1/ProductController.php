@@ -35,7 +35,7 @@ class ProductController extends APIController
 	 *     ),
 	 *   ),
 	 * )
-	 * 
+	 *
 	 * Returns a csv file of the products that have been removed from a basket.
 	 *
 	 * @param Request $request
@@ -74,8 +74,7 @@ class ProductController extends APIController
 				($json = json_encode($loss)) === false ||
 				($data = json_decode($json, true)) === false ||
 				(fputcsv($handle, $data)) === false // @phpstan-ignore-line
-			)
-			{
+			) {
 				return $this->returnErrorResponse(500, ['Could not write in file']);
 			}
 		}

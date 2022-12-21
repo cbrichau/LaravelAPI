@@ -68,8 +68,8 @@ return [
 
 			/*
 			Absolute path to directories that should be exclude from scanning
-       @deprecated Please use `scanOptions.exclude`
-      `scanOptions.exclude` overwrites this
+			@deprecated Please use `scanOptions.exclude`
+			`scanOptions.exclude` overwrites this
 			*/
 			'excludes' => [],
 		],

@@ -6,15 +6,6 @@
 
 	"editor.formatOnSave": true,
 
-	// "[css]": {
-	// 	"editor.defaultFormatter": "HookyQR.beautify"
-	// },
-	// "[html]": {
-	// 	"editor.defaultFormatter": "HookyQR.beautify",
-	// },
-	// "[javascript]": {
-	// 	"editor.defaultFormatter": "HookyQR.beautify",
-	// },
 	"[php]": {
 		"editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
 	},

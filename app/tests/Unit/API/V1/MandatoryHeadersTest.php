@@ -12,7 +12,7 @@ class MandatoryHeadersTest extends AbstractEndpointUnitTest
 {
 	/**
 	 * Checks that all endpoints fail if not provided their mandatory headers.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function test_endpoints_without_headers(): void

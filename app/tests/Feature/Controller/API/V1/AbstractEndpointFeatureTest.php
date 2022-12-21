@@ -12,7 +12,7 @@ abstract class AbstractEndpointFeatureTest extends TestCase
 {
 	/**
 	 * Helper method to make a request with the required JSON headers and authentication.
-	 * 
+	 *
 	 * @param string $method
 	 * @param string $url
 	 * @return TestResponse
@@ -28,7 +28,7 @@ abstract class AbstractEndpointFeatureTest extends TestCase
 	/**
 	 * Helper method to check the test's response broadly matches the expected response
 	 * (= same status, content, and headers).
-	 * 
+	 *
 	 * @param TestResponse $response
 	 * @param array<string, array<int, string>|int> $expected
 	 * @return void

@@ -12,7 +12,7 @@ class AuthenticationTest extends AbstractEndpointUnitTest
 {
 	/**
 	 * Checks that all endpoints fail without authentication.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function test_endpoints_without_authentication(): void

@@ -11,13 +11,13 @@ use Tests\Feature\Controller\API\V1\AbstractEndpointFeatureTest;
 
 class AddToAndRemoveFromBasketTest extends AbstractEndpointFeatureTest
 {
-	const BASKET_INVALID_ID = 0;
-	const CHECKED_OUT_BASKET_ID = 1;
-	const BASKET_VALID_ID = 2;
-	const OTHER_USER_BASKET_ID = 3;
+	public const BASKET_INVALID_ID = 0;
+	public const CHECKED_OUT_BASKET_ID = 1;
+	public const BASKET_VALID_ID = 2;
+	public const OTHER_USER_BASKET_ID = 3;
 
-	const PRODUCT_INVALID_ID = 0;
-	const PRODUCT_VALID_ID = 2;
+	public const PRODUCT_INVALID_ID = 0;
+	public const PRODUCT_VALID_ID = 2;
 
 	private function callEndpoint(string $method, int $basketId, int $productId): TestResponse
 	{
