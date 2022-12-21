@@ -32,7 +32,7 @@ class AddToAndRemoveFromBasketTest extends AbstractEndpointFeatureTest
 	{
 		foreach (['post', 'delete'] as $method)
 		{
-			$response = $this->callEndpoint($method, self::BASKET_VALID_ID,  self::PRODUCT_VALID_ID);
+			$response = $this->callEndpoint($method, self::BASKET_VALID_ID, self::PRODUCT_VALID_ID);
 
 			$this->assertValidJSONResponse($response, [
 				'status' => ($method === 'post' ? 201 : 200)
@@ -67,7 +67,7 @@ class AddToAndRemoveFromBasketTest extends AbstractEndpointFeatureTest
 		{
 			foreach ([self::BASKET_INVALID_ID, self::OTHER_USER_BASKET_ID] as $basketId)
 			{
-				$response = $this->callEndpoint($method, $basketId,  self::PRODUCT_VALID_ID);
+				$response = $this->callEndpoint($method, $basketId, self::PRODUCT_VALID_ID);
 
 				$this->assertValidJSONResponse($response, [
 					'status' => 400,
@@ -81,7 +81,7 @@ class AddToAndRemoveFromBasketTest extends AbstractEndpointFeatureTest
 	{
 		foreach (['post', 'delete'] as $method)
 		{
-			$response = $this->callEndpoint($method, self::CHECKED_OUT_BASKET_ID,  self::PRODUCT_VALID_ID);
+			$response = $this->callEndpoint($method, self::CHECKED_OUT_BASKET_ID, self::PRODUCT_VALID_ID);
 
 			$this->assertValidJSONResponse($response, [
 				'status' => 400,
@@ -94,7 +94,7 @@ class AddToAndRemoveFromBasketTest extends AbstractEndpointFeatureTest
 	{
 		foreach (['post', 'delete'] as $method)
 		{
-			$response = $this->callEndpoint($method, self::BASKET_VALID_ID,  self::PRODUCT_INVALID_ID);
+			$response = $this->callEndpoint($method, self::BASKET_VALID_ID, self::PRODUCT_INVALID_ID);
 
 			$this->assertValidJSONResponse($response, [
 				'status' => 400,
@@ -107,13 +107,13 @@ class AddToAndRemoveFromBasketTest extends AbstractEndpointFeatureTest
 	{
 		foreach (['post', 'delete'] as $method)
 		{
-			$response = $this->callEndpoint($method, self::BASKET_VALID_ID,  self::PRODUCT_VALID_ID);
+			$response = $this->callEndpoint($method, self::BASKET_VALID_ID, self::PRODUCT_VALID_ID);
 
 			$this->assertValidJSONResponse($response, [
 				'status' => ($method === 'post' ? 201 : 200)
 			]);
 
-			$duplicate = $this->callEndpoint($method, self::BASKET_VALID_ID,  self::PRODUCT_VALID_ID);
+			$duplicate = $this->callEndpoint($method, self::BASKET_VALID_ID, self::PRODUCT_VALID_ID);
 
 			$this->assertValidJSONResponse($duplicate, [
 				'status' => 400,

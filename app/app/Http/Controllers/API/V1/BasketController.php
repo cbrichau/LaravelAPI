@@ -18,14 +18,64 @@ class BasketController extends APIController
 	use RefreshDatabase;
 
 	/**
+	 * @OA\Post(
+	 *   path="/api/v1/baskets/{paramBasketId}/products/{paramProductId}",
+	 *   security={{"sanctum": {}}},
+	 *   operationId="addItem",
+	 *   tags={"Basket"},
+	 *   @OA\Parameter(name="paramBasketId", in="path", required=true, description="The basket's id", example="2"),
+	 *   @OA\Parameter(name="paramProductId", in="path", required=true, description="The product's id", example="1"),
+	 *   @OA\RequestBody(
+	 *     @OA\JsonContent(example=""),
+	 *   ),
+	 *   @OA\Response(
+	 *     response=200,
+	 *     description="Item added to basket.",
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="success", type="bool", example="true"),
+	 *       @OA\Property(property="data", type="array", example={},
+	 *         @OA\Items(type="string"),
+	 *       ),
+	 *     ),
+	 *   ),
+	 *   @OA\Response(
+	 *     response=400,
+	 *     description="Bad request.",
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="success", type="bool", example="false"),
+	 *       @OA\Property(property="errors", type="array", example={
+	 *           {"NO_BASKET": "The basket doesn't exist or doesn't belong to the authenticated user."},
+	 *           {"CLOSED_BASKET": "The basket is checked out, it can no longer be modified."},
+	 *           {"BAD_PRODUCT": "The product does not exist."},
+	 *           {"PRODUCT_IS_ALREADY_ADDED": "The basket already contains that product."},
+	 *         },
+	 *         @OA\Items(type="string"),
+	 *       ),
+	 *     ),
+	 *   ),
+	 *   @OA\Response(
+	 *     response=401,
+	 *     description="Access denied.",
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="message", type="string", example="Unauthenticated."),
+	 *     ),
+	 *   ),
+	 * )
+	 * 
 	 * Adds the given product to the given basket.
 	 * 
-	 * @param int $basketId
-	 * @param int $productId
+	 * @param string $paramBasketId
+	 * @param string $paramProductId
 	 * @return JsonResponse
 	 */
-	public function addItem(int $basketId, int $productId): JsonResponse
+	public function addItem(string $paramBasketId, string $paramProductId): JsonResponse
 	{
+		$basketId = (int) $paramBasketId;
+		$productId = (int) $paramProductId;
+
 		if (($errors = $this->findErrorsInRequest($basketId, $productId, 'add')) !== [])
 		{
 			return $this->returnErrorResponse(400, $errors);
@@ -42,14 +92,64 @@ class BasketController extends APIController
 	}
 
 	/**
+	 * @OA\Delete(
+	 *   path="/api/v1/baskets/{paramBasketId}/products/{paramProductId}",
+	 *   security={{"sanctum": {}}},
+	 *   operationId="removeItem",
+	 *   tags={"Basket"},
+	 *   @OA\Parameter(name="paramBasketId", in="path", required=true, description="The basket's id", example="2"),
+	 *   @OA\Parameter(name="paramProductId", in="path", required=true, description="The product's id", example="1"),
+	 *   @OA\RequestBody(
+	 *     @OA\JsonContent(example=""),
+	 *   ),
+	 *   @OA\Response(
+	 *     response=200,
+	 *     description="Item removed from basket.",
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="success", type="bool", example="true"),
+	 *       @OA\Property(property="data", type="array", example={},
+	 *         @OA\Items(type="string"),
+	 *       ),
+	 *     ),
+	 *   ),
+	 *   @OA\Response(
+	 *     response=400,
+	 *     description="Bad request.",
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="success", type="bool", example="false"),
+	 *       @OA\Property(property="errors", type="array", example={
+	 *           {"NO_BASKET": "The basket doesn't exist or doesn't belong to the authenticated user."},
+	 *           {"CLOSED_BASKET": "The basket is checked out, it can no longer be modified."},
+	 *           {"BAD_PRODUCT": "The product does not exist."},
+	 *           {"PRODUCT_IS_NOT_AVAILABLE": "The basket doesn't contain that product."},
+	 *         },
+	 *         @OA\Items(type="string"),
+	 *       ),
+	 *     ),
+	 *   ),
+	 *   @OA\Response(
+	 *     response=401,
+	 *     description="Access denied.",
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="message", type="string", example="Unauthenticated."),
+	 *     ),
+	 *   ),
+	 * )
+	 * 
 	 * Removes the given product from the given basket.
 	 *
-	 * @param int $basketId
-	 * @param int $productId
+	 * @param string $paramBasketId
+	 * @param string $paramProductId
 	 * @return JsonResponse
 	 */
-	public function removeItem(int $basketId, int $productId): JsonResponse
+	public function removeItem(string $paramBasketId, string $paramProductId): JsonResponse
 	{
+		$basketId = (int) $paramBasketId;
+		$productId = (int) $paramProductId;
+
 		if (($errors = $this->findErrorsInRequest($basketId, $productId, 'remove')) !== [])
 		{
 			return $this->returnErrorResponse(400, $errors);
@@ -64,10 +164,6 @@ class BasketController extends APIController
 
 		return $this->returnSuccessResponse(200);
 	}
-
-	/* *************************************** *\
-		Support methods
-	\* *************************************** */
 
 	/**
 	 * Helper method that checks the request is valid.

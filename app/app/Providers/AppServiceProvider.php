@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
 	{
 		Gate::define('access_internal_features', function (User $user)
 		{
-			return ($user->is_internal === true);
+			return ($user->is_internal == true);
 		});
 	}
 }

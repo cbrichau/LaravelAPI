@@ -15,6 +15,27 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class ProductController extends APIController
 {
 	/**
+	 * @OA\Get(
+	 *   path="/api/v1/products/download-losses",
+	 *   security={{"sanctum": {}}},
+	 *   operationId="downloadLosses",
+	 *   tags={"Product"},
+	 *   @OA\Response(
+	 *     response=200,
+	 *     description="Item added to basket.",
+	 *     @OA\JsonContent(
+	 *     ),
+	 *   ),
+	 *   @OA\Response(
+	 *     response=401,
+	 *     description="Access denied.",
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="message", type="string", example="Unauthenticated."),
+	 *     ),
+	 *   ),
+	 * )
+	 * 
 	 * Returns a csv file of the products that have been removed from a basket.
 	 *
 	 * @param Request $request

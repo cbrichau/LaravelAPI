@@ -16,6 +16,73 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends APIController
 {
 	/**
+	 * @OA\Post(
+	 *   path="/api/auth/sign-up",
+	 *   operationId="signUp",
+	 *   tags={"Authentication"},
+	 *   @OA\RequestBody(
+	 *     required=true,
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="name", type="string", example="James Bond"),
+	 *       @OA\Property(property="email", type="string", example="james@example.com"),
+	 *       @OA\Property(property="password", type="string", example="007"),
+	 *       @OA\Property(property="password_confirmation", type="string", example="007"),
+	 *     ),
+	 *   ),
+	 *   @OA\Response(
+	 *     response=200,
+	 *     description="New user created",
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="success", type="bool", example="true"),
+	 *       @OA\Property(property="data", type="array",
+	 *         @OA\Items(type="object", properties = {
+	 *           @OA\Property(property="name", type="string", example="James Bond"),
+	 *           @OA\Property(property="email", type="string", example="james@example.com"),
+	 *           @OA\Property(property="basket", type="int", example="12"),
+	 *           @OA\Property(property="token", type="string", example="1|XZmaKMKJJBt9IXJ6I5ob8Cf6yrfAJSPbqxyGvevM"),
+	 *         }),
+	 *       ),
+	 *     ),
+	 *   ),
+	 *   @OA\Response(
+	 *     response=400,
+	 *     description="Bad request.",
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="success", type="bool", example="false"),
+	 *       @OA\Property(property="errors", type="object",
+	 *         @OA\Property(property="messages", type="object",
+	 *           @OA\Property(property="name", type="array", example={
+	 *               "The name field is required.",
+	 *             },
+	 *             @OA\Items(type="string"),
+	 *           ),
+	 *           @OA\Property(property="email", type="array", example={
+	 *               "The email field is required.",
+	 *               "The email must be a valid email address.",
+	 *               "The email has already been taken."
+	 *             },
+	 *             @OA\Items(type="string"),
+	 *           ),
+	 *           @OA\Property(property="password", type="array", example={
+	 *               "The password field is required.",
+	 *             },
+	 *             @OA\Items(type="string"),
+	 *           ),
+	 *           @OA\Property(property="password_confirmation", type="array", example={
+	 *               "The password confirmation field is required.",
+	 *               "The password confirmation and password must match.",
+	 *             },
+	 *             @OA\Items(type="string"),
+	 *           ),
+	 *         ),
+	 *       ),
+	 *     ),
+	 *   ),
+	 * )
+	 * 
 	 * Registers a new user.
 	 *
 	 * @param Request $request
@@ -52,6 +119,68 @@ class AuthController extends APIController
 	}
 
 	/**
+	 * @OA\Post(
+	 *   path="/api/auth/sign-in",
+	 *   operationId="signIn",
+	 *   tags={"Authentication"},
+	 *   @OA\RequestBody(
+	 *     required=true,
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="email", type="string", example="james.bond@example.com"),
+	 *       @OA\Property(property="password", type="string", example="007"),
+	 *     ),
+	 *   ),
+	 *   @OA\Response(
+	 *     response=200,
+	 *     description="User logged in",
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="success", type="bool", example="true"),
+	 *       @OA\Property(property="data", type="array",
+	 *         @OA\Items(type="object", properties = {
+	 *           @OA\Property(property="name", type="string", example="James Bond"),
+	 *           @OA\Property(property="token", type="string", example="1|XZmaKMKJJBt9IXJ6I5ob8Cf6yrfAJSPbqxyGvevM"),
+	 *         }),
+	 *       ),
+	 *     ),
+	 *   ),
+	 *   @OA\Response(
+	 *     response=400,
+	 *     description="Bad request.",
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="success", type="bool", example="false"),
+	 *       @OA\Property(property="errors", type="object",
+	 *         @OA\Property(property="messages", type="object",
+	 *           @OA\Property(property="email", type="array", example={
+	 *               "The email field is required.",
+	 *               "The email must be a valid email address.",
+	 *             },
+	 *             @OA\Items(type="string"),
+	 *           ),
+	 *           @OA\Property(property="password", type="array", example={
+	 *               "The password field is required.",
+	 *             },
+	 *             @OA\Items(type="string"),
+	 *           ),
+	 *         ),
+	 *       ),
+	 *     ),
+	 *   ),
+	 *   @OA\Response(
+	 *     response=401,
+	 *     description="Access denied.",
+	 *     @OA\JsonContent(
+	 *       type="object",
+	 *       @OA\Property(property="success", type="bool", example="false"),
+	 *       @OA\Property(property="errors", type="array",
+	 *         @OA\Items(type="string", example="Wrong email and/or password"),
+	 *       ),
+	 *     ),
+	 *   ),
+	 * )
+	 * 
 	 * Logs in a valid user.
 	 *
 	 * @param Request $request
