@@ -251,6 +251,10 @@ return [
 		// Constants which can be used in annotations
 		'constants' => [
 			'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
+			'INTERNAL_USER_NAME' => 'James Bond',
+			'INTERNAL_USER_EMAIL' => 'james.bond@example.com',
+			'INTERNAL_USER_PASSWORD' => '007',
+			'TOKEN_EXAMPLE' => '1|XZmaKMKJJBt9IXJ6I5ob8Cf6yrfAJSPbqxyGvevM',
 		],
 	],
 ];

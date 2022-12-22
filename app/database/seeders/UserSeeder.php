@@ -30,8 +30,8 @@ class UserSeeder extends Seeder
 	{
 		$testUsers = [
 			// name, email, password, is_internal
-			['James Bond', 'james.bond@example.com', '007', true],
-			['Dracula', 'dracula@example.com', '666', false]
+			[$_ENV['INTERNAL_USER_NAME'], $_ENV['INTERNAL_USER_EMAIL'], $_ENV['INTERNAL_USER_PASSWORD'], true],
+			[$_ENV['EXTERNAL_USER_NAME'], $_ENV['EXTERNAL_USER_EMAIL'], $_ENV['EXTERNAL_USER_PASSWORD'], false],
 		];
 
 		foreach ($testUsers as $user)
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
 	 */
 	private function createSampleUsers(): void
 	{
-		User::factory(2)->create();
+		User::factory(20)->create();
 	}
 
 	/**

@@ -25,10 +25,10 @@ class AuthController extends APIController
 	 *     required=true,
 	 *     @OA\JsonContent(
 	 *       type="object",
-	 *       @OA\Property(property="name", type="string", example="James Bond"),
-	 *       @OA\Property(property="email", type="string", example="james@example.com"),
-	 *       @OA\Property(property="password", type="string", example="007"),
-	 *       @OA\Property(property="password_confirmation", type="string", example="007"),
+	 *       @OA\Property(property="name", type="string", example="Jason Bourne"),
+	 *       @OA\Property(property="email", type="string", example="jason.bourne@example.com"),
+	 *       @OA\Property(property="password", type="string", example="DavidWebb"),
+	 *       @OA\Property(property="password_confirmation", type="string", example="DavidWebb"),
 	 *     ),
 	 *   ),
 	 *   @OA\Response(
@@ -39,10 +39,10 @@ class AuthController extends APIController
 	 *       @OA\Property(property="success", type="bool", example="true"),
 	 *       @OA\Property(property="data", type="array",
 	 *         @OA\Items(type="object", properties = {
-	 *           @OA\Property(property="name", type="string", example="James Bond"),
-	 *           @OA\Property(property="email", type="string", example="james@example.com"),
+	 *           @OA\Property(property="name", type="string", example="Jason Bourne"),
+	 *           @OA\Property(property="email", type="string", example="jason.bourne@example.com"),
 	 *           @OA\Property(property="basket", type="int", example="12"),
-	 *           @OA\Property(property="token", type="string", example="1|XZmaKMKJJBt9IXJ6I5ob8Cf6yrfAJSPbqxyGvevM"),
+	 *           @OA\Property(property="token", type="string", example=TOKEN_EXAMPLE),
 	 *         }),
 	 *       ),
 	 *     ),
@@ -129,8 +129,8 @@ class AuthController extends APIController
 	 *     required=true,
 	 *     @OA\JsonContent(
 	 *       type="object",
-	 *       @OA\Property(property="email", type="string", example="james.bond@example.com"),
-	 *       @OA\Property(property="password", type="string", example="007"),
+	 *       @OA\Property(property="email", type="string", example=INTERNAL_USER_EMAIL),
+	 *       @OA\Property(property="password", type="string", example=INTERNAL_USER_PASSWORD),
 	 *     ),
 	 *   ),
 	 *   @OA\Response(
@@ -141,8 +141,8 @@ class AuthController extends APIController
 	 *       @OA\Property(property="success", type="bool", example="true"),
 	 *       @OA\Property(property="data", type="array",
 	 *         @OA\Items(type="object", properties = {
-	 *           @OA\Property(property="name", type="string", example="James Bond"),
-	 *           @OA\Property(property="token", type="string", example="1|XZmaKMKJJBt9IXJ6I5ob8Cf6yrfAJSPbqxyGvevM"),
+	 *           @OA\Property(property="name", type="string", example=INTERNAL_USER_NAME),
+	 *           @OA\Property(property="token", type="string", example=TOKEN_EXAMPLE),
 	 *         }),
 	 *       ),
 	 *     ),

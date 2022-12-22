@@ -20,19 +20,19 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "James Bond"
+                                        "example": "Jason Bourne"
                                     },
                                     "email": {
                                         "type": "string",
-                                        "example": "james@example.com"
+                                        "example": "jason.bourne@example.com"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example": "007"
+                                        "example": "DavidWebb"
                                     },
                                     "password_confirmation": {
                                         "type": "string",
-                                        "example": "007"
+                                        "example": "DavidWebb"
                                     }
                                 },
                                 "type": "object"
@@ -57,11 +57,11 @@
                                                 "properties": {
                                                     "name": {
                                                         "type": "string",
-                                                        "example": "James Bond"
+                                                        "example": "Jason Bourne"
                                                     },
                                                     "email": {
                                                         "type": "string",
-                                                        "example": "james@example.com"
+                                                        "example": "jason.bourne@example.com"
                                                     },
                                                     "basket": {
                                                         "type": "integer",
@@ -525,27 +525,27 @@
                         "in": "query"
                     },
                     {
-                        "name": "basket_product.created_at[greaterThan]",
+                        "name": "add_to_basket_date[greaterThan]",
                         "in": "query"
                     },
                     {
-                        "name": "basket_product.created_at[lowerThan]",
+                        "name": "add_to_basket_date[lowerThan]",
                         "in": "query"
                     },
                     {
-                        "name": "removal_date[greaterThan]",
+                        "name": "removed_from_basket_date[greaterThan]",
                         "in": "query"
                     },
                     {
-                        "name": "removal_date[lowerThan]",
+                        "name": "removed_from_basket_date[lowerThan]",
                         "in": "query"
                     },
                     {
-                        "name": "price[greaterThan]",
+                        "name": "product_price[greaterThan]",
                         "in": "query"
                     },
                     {
-                        "name": "price[lowerThan]",
+                        "name": "product_price[lowerThan]",
                         "in": "query"
                     }
                 ],
